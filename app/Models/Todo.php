@@ -16,12 +16,6 @@ class Todo extends Model
     protected $allowedFields    = ['JOB','DATETIME_CREATED', 'DATETIME_UPDATED', 'DATETIME_FINISHED'];
 
 
-    // Dates
-    protected $useTimestamps = true;
-    //   protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
 
     // Validation
     protected $validationRules      = [];
@@ -45,23 +39,12 @@ class Todo extends Model
         $result = $this->orderBy('ID_JOB')->findAll();
         return $result;
     }
-
+    
     public function getJob($id_job)
     {
         $result = $this->find($id_job);
         return $result;
     }
 
-    // public function deleteUser($id)
-    // {
-    //     if ($this->find($id)) {
-    //         $this->delete($id);
-    //         return true;
-    //         // return 'ACHOU!';
-    //     } else {
-    //         return false;
-    //         // return 'FKIHJDES';
-    //     }
-    // }
     
 }

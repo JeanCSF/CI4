@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +8,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODO!</title>
     <link rel="stylesheet" href="<?= base_url('/assets/bootstrap.min.css')?>">
+    <style>
+     
+        .pagination li {
+            width: 25px;
+            height: 25px;
+            margin-left: 15px;
+        }
+        .pagination a:hover {
+            color: #EFEFEF;
+            background-color: #3B71CA;
+        }
+        .active a {
+            color: #EFEFEF !important;
+            background-color: #3B71CA !important;
+        }
+        .pagination a{
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+            padding: 1em;
+            margin: -1em;
+            text-decoration: none;
+            color: black;
+            font-weight: bolder;
+        }
+    </style>
 </head>
 
 <body>

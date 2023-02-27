@@ -12,13 +12,13 @@ $pager->setSurroundCount(2);
 	<ul class="pagination">
 		<?php if ($pager->hasPrevious()) : ?>
 			<li>
-				<a href="<?= $pager->getFirst() ?>" aria-label="<?= lang('Pager.first') ?>">
-					<span aria-hidden="true"><?= lang('Pager.first') ?></span>
+				<a href="<?= $pager->getFirst() ?>" aria-label="<?= lang('&#8676;') ?>">
+					<span aria-hidden="true" title="Primeira Página"><?= lang('&#8676;') ?></span>
 				</a>
 			</li>
 			<li>
-				<a href="<?= $pager->getPrevious() ?>" aria-label="<?= lang('Pager.previous') ?>">
-					<span aria-hidden="true"><?= lang('Pager.previous') ?></span>
+				<a href="<?= $pager->getPrevious() ?>" aria-label="<?= lang('<') ?>">
+					<span aria-hidden="true" title="Voltar 3 Páginas"><?= lang('<') ?></span>
 				</a>
 			</li>
 		<?php endif ?>
@@ -33,13 +33,13 @@ $pager->setSurroundCount(2);
 
 		<?php if ($pager->hasNext()) : ?>
 			<li>
-				<a href="<?= $pager->getNext() ?>" aria-label="<?= lang('Pager.next') ?>">
-					<span aria-hidden="true"><?= lang('Pager.next') ?></span>
+				<a href="<?= $pager->getNext() ?>" aria-label="<?= lang('>') ?>">
+					<span aria-hidden="true"title="Pular 3 Páginas"><?= lang('>') ?></span>
 				</a>
 			</li>
 			<li>
-				<a href="<?= $pager->getLast() ?>" aria-label="<?= lang('Pager.last') ?>">
-					<span aria-hidden="true"><?= lang('Pager.last') ?></span>
+				<a href="<?= $pager->getLast() ?>" aria-label="<?= lang('&#8677;') ?>">
+					<span aria-hidden="true" title="Última Página"><?= lang('&#8677;') ?></span>
 				</a>
 			</li>
 		<?php endif ?>
