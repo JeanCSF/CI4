@@ -14,17 +14,24 @@ class Main extends Controller
         if ($this->request->getGet('search')) {
             $searchInput = $this->request->getGet('search');
             $data = [
-                'jobs'  => $job->like('JOB', $searchInput)
-                               ->orLike('DATETIME_CREATED', $searchInput)
-                               ->orderBy('ID_JOB')
-                               ->paginate(10),
-                'pager' => $job->pager,
+                'jobs'      => $job->like('JOB', $searchInput)
+                                   ->orLike('DATETIME_CREATED', $searchInput)
+                                   ->orderBy('ID_JOB')
+                                   ->paginate(10),
+                'pager'     => $job->pager,
+                'alljobs'   => $job->like('JOB', $searchInput)
+                                   ->orLike('DATETIME_CREATED', $searchInput)
+                                   ->countAllResults(),
+                'search'     => true,
+              
             ];
             return view('home', $data);
         }
         $data = [
             'jobs'  => $job->orderBy('ID_JOB')->paginate(10),
-            'pager' => $job->pager,
+            'alljobs'   => $job->select()->countAll(),
+            'pager'     => $job->pager,
+            
         ];
 
         echo view('home', $data);
@@ -32,10 +39,30 @@ class Main extends Controller
 
     public function done(){
         $job = new Todo();
+        $searchInput = $this->request->getGet('search'); 
+        if ($searchInput) {
+            $data = [
+                'jobs'      => $job
+                                   ->like('JOB', $searchInput)->where('DATETIME_FINISHED !=', NULL)
+                                   ->orLike('DATETIME_CREATED', $searchInput)->where('DATETIME_FINISHED !=', NULL)
+                                   ->orLike('DATETIME_FINISHED', $searchInput)->where('DATETIME_FINISHED !=', NULL)
+                                   ->orderBy('ID_JOB')
+                                   ->paginate(10),
+                'pager'     => $job->pager,
+                'alljobs'   => $job->like('JOB', $searchInput)->where('DATETIME_FINISHED !=', NULL)
+                                   ->orLike('DATETIME_CREATED', $searchInput)->where('DATETIME_FINISHED !=', NULL)
+                                   ->orLike('DATETIME_FINISHED', $searchInput)->where('DATETIME_FINISHED !=', NULL)
+                                   ->countAllResults(),
+                'done'      => true,
+                'search'    => true,
+            ];
+            return view('home', $data);
+        }
         $data = [
             'jobs'    => $job->where('DATETIME_FINISHED !=', NULL)->paginate(10),
             'pager'   => $job->pager,
             'alljobs' => $job->where('DATETIME_FINISHED !=', NULL)->countAllResults(),
+            'done'    => true,
         ];
         return view('home', $data);
     }
@@ -109,5 +136,7 @@ class Main extends Controller
 
         return redirect()->to(base_url('/'));
     }
+
+
 
 }
