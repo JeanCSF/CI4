@@ -10,7 +10,9 @@ class Main extends Controller
 
     public function index()
     {
+        $session = session();
         $job = new Todo();
+        if ($session->has('USER_ID')) {
         if ($this->request->getGet('search')) {
             $searchInput = $this->request->getGet('search');
             $data = [
@@ -27,6 +29,7 @@ class Main extends Controller
             ];
             return view('home', $data);
         }
+        
         $data = [
             'jobs'  => $job->orderBy('ID_JOB')->paginate(10),
             'alljobs'   => $job->select()->countAll(),
@@ -35,6 +38,19 @@ class Main extends Controller
         ];
 
         echo view('home', $data);
+    } else {
+        $this->home();
+    }
+    }
+
+    public function home()
+    {
+        $session = session();
+        if ($session->has('USER_ID')) {
+            redirect()->to(base_url('/'));
+        } else {
+            echo view('main');
+        }
     }
 
     public function done(){
@@ -75,7 +91,7 @@ class Main extends Controller
         $post = $this->request->getPost();
 
         if (!empty($post)) {
-            $dados = [
+            $data = [
                 'ID_JOB'            => $post['id_job'],
                 'JOB'               => $post['job_name'],
                 'DATETIME_CREATED'  => date('Y-m-d H:i:s'),
@@ -83,7 +99,7 @@ class Main extends Controller
 
             if (isset($post['id_job'])) {
                 $dados['id_job'] = $post['id_job'];
-                $job->save($dados);
+                $job->save($data);
             }
         }
         return redirect()->to(base_url('/'));

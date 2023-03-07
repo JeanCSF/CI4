@@ -82,9 +82,9 @@ function reverseDates($oldData)
     <div class="row">
         <div class="col-4 ">
             <h3>
-                <?php if(isset($done)): ?>
+                <?php if (isset($done)) : ?>
                     Concluídas
-                <?php else: ?>
+                <?php else : ?>
                     Todas as tarefas
                 <?php endif; ?>
             </h3>
@@ -100,20 +100,20 @@ function reverseDates($oldData)
         <div class="col-lg-8 col-md-auto col-sm-auto">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item <?= isset($done) || isset($search)? '' :'active'?>"<?= isset($done)? '' : 'aria-current="page"'?>>
-                    <?= isset($done) || isset($search)? "<a  href='$baseurl'>Home</a>" : "Home"?></li>
-                    
-                    <?= isset($search) && empty($done)?
+                    <li class="breadcrumb-item <?= isset($done) || isset($search) ? '' : 'active' ?>" <?= isset($done) ? '' : 'aria-current="page"' ?>>
+                        <?= isset($done) || isset($search) ? "<a  href='$baseurl'>Home</a>" : "Home" ?></li>
+
+                    <?= isset($search) && empty($done) ?
                         "<li class='breadcrumb-item active' aria-current='page'>Pesquisa</li>" : '' ?>
-            
-                    <?=isset($done) && empty($search)?'<li class="breadcrumb-item active" aria-current="page">Concluídas</li>' : '' ?>
-                    <?= isset($search) && isset($done)?
+
+                    <?= isset($done) && empty($search) ? '<li class="breadcrumb-item active" aria-current="page">Concluídas</li>' : '' ?>
+                    <?= isset($search) && isset($done) ?
                         "<li class='breadcrumb-item'><a href='$doneurl'>Concluídas</a></li>
                         <li class='breadcrumb-item active' aria-current='page'>Pesquisa</li>" : '' ?>
                 </ol>
             </nav>
             <?php if (count($jobs) == 0) : ?>
-                <h3 class="alert alert-warning text-center"><?= isset($done)?'Não existem tarefas concluídas para esta pesquisa' : 'Não existem tarefas'?></h3>
+                <h3 class="alert alert-warning text-center"><?= isset($done) ? 'Não existem tarefas concluídas para esta pesquisa' : 'Não existem tarefas' ?></h3>
             <?php else : ?>
                 <table class="table table-hover">
                     <thead class="table table-dark">
