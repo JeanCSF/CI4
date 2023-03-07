@@ -5,14 +5,13 @@ namespace App\Controllers;
 use App\Models\Todo;
 use CodeIgniter\Controller;
 
-class Main extends Controller
+class Main extends BaseController
 {
 
     public function index()
     {
-        $session = session();
         $job = new Todo();
-        if ($session->has('USER_ID')) {
+        if ($this->session->has('USER_ID')) {
         if ($this->request->getGet('search')) {
             $searchInput = $this->request->getGet('search');
             $data = [
