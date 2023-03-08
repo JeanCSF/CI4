@@ -6,9 +6,9 @@
 use App\Models\Todo;
 
 $db = new Todo();
-$alltasks = $db->select()->countAll();
-$alldone = $db->where('DATETIME_FINISHED !=', NULL)->countAllResults();
-$notdone = $db->where('DATETIME_FINISHED =', NULL)->countAllResults();
+$alltasks = $db->select()->join('login', 'login.USER_ID = jobs.USER_ID')->countAllResults();
+$alldone = $db->select()->join('login', 'login.USER_ID = jobs.USER_ID')->where('DATETIME_FINISHED !=', NULL)->countAllResults();
+$notdone = $db->select()->join('login', 'login.USER_ID = jobs.USER_ID')->where('DATETIME_FINISHED =', NULL)->countAllResults();
 $baseurl = base_url('/');
 $doneurl = site_url('main/done');
 
@@ -78,21 +78,19 @@ function reverseDates($oldData)
 </div>
 <!-- Task Modal -->
 
-<header class="container">
-    <div class="row">
-        <div class="col-4 ">
-            <h3>
-                <?php if (isset($done)) : ?>
-                    Concluídas
-                <?php else : ?>
-                    Todas as tarefas
-                <?php endif; ?>
-            </h3>
-        </div>
-        <div class="col-5 offset-1 text-end">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal" onclick="fillModalNewJob()">Criar Tarefa</button>
-        </div>
-    </div>
+<header class="ms-5 me-5 d-flex justify-content-between">
+        <h3>
+            <?php if (isset($done)) : ?>
+                Concluídas
+            <?php else : ?>
+                Todas as tarefas
+            <?php endif; ?>
+        </h3>
+        <form class="d-flex me-5" role="search">
+            <input class="form-control me-1" type="search" name="search" placeholder="Pesquisar" aria-label="Search">
+            <input type="submit" value="&#128270;" class="btn btn-outline-primary me-5">
+        </form>
+        <button type="button" class="ms-5 btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal" role="new task" onclick="fillModalNewJob()">Criar Tarefa</button>
 </header>
 <hr>
 <div class="container mt-1">
@@ -113,7 +111,7 @@ function reverseDates($oldData)
                 </ol>
             </nav>
             <?php if (count($jobs) == 0) : ?>
-                <h3 class="alert alert-warning text-center"><?= isset($done) ? 'Não existem tarefas concluídas para esta pesquisa' : 'Não existem tarefas' ?></h3>
+                <h3 class="alert alert-warning text-center"><?= isset($done) || isset($search) ? 'Não existem tarefas para esta pesquisa' : 'Não existem tarefas' ?></h3>
             <?php else : ?>
                 <table class="table table-hover">
                     <thead class="table table-dark">
@@ -132,13 +130,13 @@ function reverseDates($oldData)
                                 <td class="text-center"><?= isset($job->DATETIME_FINISHED) ? reverseDates($job->DATETIME_FINISHED) : 'Não finalizada' ?></td>
                                 <td class="text-end">
                                     <?php if (empty($job->DATETIME_FINISHED)) : ?>
-                                        <a href="<?= site_url('main/jobdone/' . $job->ID_JOB) ?>" class="btn btn-light btn-sm mx-1" title="Finalizar Tarefa">&#9680;</a>
-                                        <a class="btn btn-light btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#taskModal" title="Editar Tarefa" onclick="fillModalEdit('<?= $job->ID_JOB ?>', '<?= $job->JOB ?>')">&#9997;</a>
+                                        <a href="<?= site_url('todocontroller/jobdone/' . $job->ID_JOB) ?>" class="btn btn-light btn-sm mx-1" role="finish" title="Finalizar Tarefa">&#9680;</a>
+                                        <a class="btn btn-light btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#taskModal" title="Editar Tarefa" role="edit" onclick="fillModalEdit('<?= $job->ID_JOB ?>', '<?= $job->JOB ?>')">&#9997;</a>
                                     <?php else : ?>
                                         <button class="btn btn-light btn-sm mx-1" disabled>&#10004;</button>
                                         <button class="btn btn-light btn-sm mx-1" disabled>&#9997;</button>
                                     <?php endif; ?>
-                                    <button type="button" class="btn btn-light btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="fillModalDelete(<?= $job->ID_JOB ?>)">&#128465;</button>
+                                    <button type="button" class="btn btn-light btn-sm mx-1" data-bs-toggle="modal" title="Excluír Tarefa" role="delete" data-bs-target="#deleteModal" onclick="fillModalDelete(<?= $job->ID_JOB ?>)">&#128465;</button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -184,7 +182,7 @@ function reverseDates($oldData)
 
         function fillModalNewJob() {
             frm = document.getElementById("form");
-            frm.setAttribute('action', '<?= site_url('main/newjobsubmit') ?>')
+            frm.setAttribute('action', '<?= site_url('todocontroller/newjobsubmit') ?>')
 
             frmBtn = document.getElementById("btnSubmit");
             frmBtn.setAttribute('value', 'Gravar');
@@ -192,7 +190,7 @@ function reverseDates($oldData)
 
         function fillModalEdit(id, job) {
             frm = document.getElementById("form");
-            frm.setAttribute('action', '<?= site_url('main/editjobsubmit') ?>')
+            frm.setAttribute('action', '<?= site_url('todocontroller/editjobsubmit') ?>')
 
             frmBtn = document.getElementById("btnSubmit");
             frmBtn.setAttribute('value', 'Atualizar');
@@ -207,7 +205,7 @@ function reverseDates($oldData)
 
         function deleteJob(id) {
             var id = btnDelete.getAttribute('dado-alvo', id);
-            window.location.replace('main/deletar/' + id);
+            window.location.replace('todocontroller/delete/' + id);
         }
     </script>
 

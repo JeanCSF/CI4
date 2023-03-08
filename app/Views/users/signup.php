@@ -10,14 +10,10 @@
                 <hr>
                 <?php
                 helper('form');
-                echo form_open('userscontroller/signupsubmit');
+                echo form_open('userscontroller/signup');
                 ?>
-
-                <?php if (isset($error)) : ?>
-                    <p class="alert alert-danger text-center"><?php echo $error; ?></p>
-                <?php endif; ?>
                 <div class="row mb-3">
-                    <input type="text" name="txtUser" class="form-control" placeholder="Usuário" required autofocus>
+                    <input type="text" name="txtUser" class="form-control" placeholder="Usuário" value="<?= isset($userData)? $userData['txtUser'] : ''?>" required autofocus>
                 </div>
                 <div class="row mb-3">
                     <input type="password" class="form-control" name="txtPass" placeholder="Digite sua senha" required>
@@ -26,10 +22,10 @@
                     <input type="password" class="form-control" name="txtPass2" placeholder="Confirme a senha digitada" required>
                 </div>
                 <div class="row mb-3">
-                    <input type="email" class="form-control" name="txtEmail" placeholder="Email" required>
+                    <input type="email" class="form-control" name="txtEmail" placeholder="Email" value="<?= isset($userData)? $userData['txtEmail'] : ''?>" required>
                 </div>
                 <div class="row mb-3">
-                    <input type="text" class="form-control" name="txtName" placeholder="Nome" required>
+                    <input type="text" class="form-control" name="txtName" placeholder="Nome" value="<?= isset($userData)? $userData['txtName'] : ''?>" required>
                     <div class="text-center mt-2">
                         <a href="<?= site_url('/') ?>" class="btn btn-secondary">Cancelar</a>
                         <input class="btn btn-primary" type="submit" value="Criar conta">

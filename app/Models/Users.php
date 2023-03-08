@@ -37,10 +37,6 @@ class Users extends Model
 
     public function signUpCreateAccount($post)
     {
-        if ($this->signUpCheckUser($post)) {
-            $data['error'] = 'Usuário já cadastrado';
-            echo view('users/signup', $data);
-        }
         $data = [
             'USER'      => $post['txtUser'],
             'PASS'      => password_hash($post['txtPass'], PASSWORD_BCRYPT),
@@ -50,13 +46,11 @@ class Users extends Model
 
         ];
 
-        $this->insert($data);
-        return redirect()->to(base_url('/'));
+        return $this->insert($data)? true : false;
     }
 
     public function signUpCheckUser($post)
     {
-
         $user = $post['txtUser'];
         $email = $post['txtEmail'];
         $where = "USER = {$user} OR EMAIL = {$email}";
@@ -81,9 +75,9 @@ class Users extends Model
         return (password_verify($pass, $hash)) ? true : false;
     }
 
-    public function getUser($id)
+    public function getUserData($user)
     {
-        $data = $this->where('USER', $id)->get();
+        $data = $this->where('USER', $user)->get();
         $userData = $data->getRow();
         return $userData;
     }

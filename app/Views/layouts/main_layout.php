@@ -51,10 +51,6 @@
                 <a href="#" class="nav-link">Sobre</a>
             </li>
         </ul>
-        <form class="col-3 offset-3 d-flex" role="search">
-            <input class="form-control ms-2 me-1" type="search" name="search" placeholder="Pesquisar" aria-label="Search">
-            <input type="submit" value="&#128270;" class="btn btn-outline-primary">
-        </form>
         <div class="col-1 collapse navbar-collapse justify-content-end" id="navbarNavDarkDropdown">
             <div class="btn-group dropstart">
                 <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -62,11 +58,20 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">&#129485; Minha Conta</a></li>
-                    <li><a class="dropdown-item" href="#"><strong>&#8998;</strong> Logout</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('userscontroller/logout') ?>"><strong>&#8998;</strong> Logout</a></li>
                 </ul>
             </div>
         </div>
     </navbar>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="top: 10px; right: 10px; z-index: 9999;">
+        <div id="basicToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="alert" style="margin-bottom: 0;" id="alerta">
+                <span id="msgInfo" style="text-transform: capitalize;"></span>
+                <button type="button" class="btn-close btn-close-black float-end" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
 
     <?= $this->renderSection('conteudo') ?>
 
@@ -78,7 +83,17 @@
 
     <script src="<?= base_url('assets/popper.min.js') ?>"></script>
     <script src="<?= base_url('assets/bootstrap.min.js') ?>"></script>
-
+    <script>
+        <?php
+        if (isset($_SESSION['mensagem'])) {
+            echo "msg = document.querySelector('#msgInfo');
+             alerta = document.querySelector('#alerta');
+             alerta.classList.add('" . $_SESSION['mensagem']['tipo'] . "');
+             msg.textContent = '" . $_SESSION['mensagem']['mensagem'] . "';
+             new bootstrap.Toast(document.querySelector('#basicToast')).show();";
+        }
+        ?>
+    </script>
     <?= $this->renderSection("script"); ?>
 </body>
 
