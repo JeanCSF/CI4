@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Models\Users;
 use CodeIgniter\Controller;
 
-
 class Userscontroller extends BaseController
 {
 
@@ -29,6 +28,7 @@ class Userscontroller extends BaseController
                 $this->session->setFlashdata('mensagem', $mensagem);
                 return view('users/signup', $data);
             } else if ($users->signUpCreateAccount($post)) {
+                $key = password_hash($post['txtPass'] . date('Y-m-d H:i:s'), PASSWORD_BCRYPT);
                 $email = \Config\Services::email();
 
                 $config = [
@@ -44,10 +44,12 @@ class Userscontroller extends BaseController
                 $email->setFrom('jean.carlos16@livecom', 'Jean');
                 $email->setTo($post['txtEmail']);
 
-                $email->setSubject('Confirmação de email');
-                $email->setMessage('Testing the email class.');
+                $email->setSubject($post['txtName'] . 'Confirme seu E-mail para continuar');
+                $email->setMessage("Olá, ".$post['txtName'] .
+                                   "\n\nAgradecemos o seu cadastro, para ter acesso a sua conta por favor confirme o seu e-mail através do link abaixo.
+                                   \n\n". (base_url('userscontroller/emailconfirm/'. $key)));
 
-                if($email->send()){;
+                if($email->send()){
                 $mensagem['mensagem'] = 'Cadastro criado com sucesso, acesse seu email para confirmar a conta!';
                 $mensagem['tipo'] = 'alert-success';
                 $this->session->setFlashdata('mensagem', $mensagem);
@@ -56,6 +58,16 @@ class Userscontroller extends BaseController
             }
         }
         echo view('users/signup');
+    }
+
+    public function emailConfirm($key){
+        $users = new Users();
+        if(!empty($key)){
+            if($users->getUserKey($key)){
+                
+            }
+        }
+        echo view('users/confirmation');
     }
 
     public function checkPass($post)

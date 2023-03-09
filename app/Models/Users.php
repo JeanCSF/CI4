@@ -83,4 +83,14 @@ class Users extends Model
         $userData = $data->getRow();
         return $userData;
     }
+
+    public function getUserKey($key){
+        $data = $this->where('KEY', $key)->get();
+        $userKey = $data->getrow();
+        return $userKey->USER_ID;
+    }
+
+    public function activateUser($id){
+        return $this->query("UPDATE login SET ACTIVATION = 1")
+    }
 }
