@@ -14,7 +14,7 @@ class Users extends Model
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['USER', 'PASS', 'NAME', 'EMAIL', 'SU'];
+    protected $allowedFields    = ['USER', 'PASS', 'NAME', 'EMAIL', 'SU', 'ACTIVATION', 'KEY'];
 
 
 
@@ -38,11 +38,13 @@ class Users extends Model
     public function signUpCreateAccount($post)
     {
         $data = [
-            'USER'      => $post['txtUser'],
-            'PASS'      => password_hash($post['txtPass'], PASSWORD_BCRYPT),
-            'NAME'      => $post['txtName'],
-            'EMAIL'     => $post['txtEmail'],
-            'SU'        => 0
+            'USER'          => $post['txtUser'],
+            'PASS'          => password_hash($post['txtPass'], PASSWORD_BCRYPT),
+            'NAME'          => $post['txtName'],
+            'EMAIL'         => $post['txtEmail'],
+            'KEY'           => password_hash($post['txtPass'] . date('Y-m-d H:i:s'), PASSWORD_BCRYPT),
+            'SU'            => 0,
+            'ACTIVATION'    => 0,
 
         ];
 
